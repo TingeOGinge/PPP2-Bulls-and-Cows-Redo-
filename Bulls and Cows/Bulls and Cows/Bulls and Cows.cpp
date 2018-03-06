@@ -102,7 +102,7 @@ int main(){
 		"If you guess the right letter but in the wrong order you have 1 cow \n"
 		"If you guess both the letter and the order correctly you get 1 bull \n"
 		"You need 4 bulls to win \n"
-		"Enter you guesses like so: 1 2 3 4 \n"
+		"Enter you guesses like so: a b c d \n"
 		"Ready? \n... \n..... \nGO!\n";
 		srand(seed);
 		bullsAndCows();
