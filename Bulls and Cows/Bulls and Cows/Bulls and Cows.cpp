@@ -1,61 +1,46 @@
 #include "stdafx.h"
 #include "std_lib_facilities.h"
 
-vector<int>answers = { -1, -1, -1, -1 };	//-1 prevents any 0s being ignored when createAnswers() is first called
-vector<int>guesses(4);
-int a, b, c, d, bulls, cows, seed, score = 0;
+vector<char>answers = { '!', '!', '!', '!' };	// used '!' to represent any answers that have failed to generate
+vector<char>guesses(4);
+int bulls = 0, cows = 0, score = 0;
 bool keepPlaying = true;
-string userContinue = " ";
 
-void welcomeMessage()
-{
-	cout << "Okay, so, I'm thinking of 4 different integers between 0 - 9 \n" <<
-		"If you guess the right number but in the wrong order you have 1 cow \n"
-		"If you guess both the number and the order correctly you get 1 bull \n"
-		"You need 4 bulls to win \n"
-		"Enter you guesses like so: 1 2 3 4 \n"
-		"Ready? \n... \n..... \nGO!\n";
-	//"But first, please enter positive integer \n";
-}
 void createAnswers()
+//Creates 4 random, different letters and arranges them in a vector 
 {
 	bool valid_int;
-	int temp;
+	char result; 
 
-	for (int x = 0; x < 4; x++)
-	{
-		temp = rand() % 10;
+	for (int x = 0; x < 4; x++){
+		result = 'a' + rand() % 26;
 		valid_int = true;
-		for (int y = 0; y < x; y++)		//This loop prevents two numbers appearing twice in the answer
-		{
-			if (temp == answers[y])
-			{
-				valid_int = false;
-
-			}
+		for (int y = 0; y < x; y++){		//This loop prevents two numbers appearing twice in the answer
+			if (result == answers[y]) valid_int = false;
 		}
-		if (valid_int == true) answers[x] = temp;
+		if (valid_int == true) answers[x] = result;
 		else x--;
 	}
 }
 void createGuesses()
-//Precondition: Guesses must be valid integers
+//Precondition: Guesses must letters between a - z
+//User enters 
 {
-	cin >> a >> b >> c >> d;
-	if (!cin) error("createGuesses() precondition");
-	guesses[0] = a;
-	guesses[1] = b;
-	guesses[2] = c;
-	guesses[3] = d;
+	char a;
+	for (int x = 0; x < 4; x++){
+		cin >> a;
+		if (a > 122 || a < 97) error("checkGuesses() precondition");
+		guesses[x] = a;
+	}
 }
 void checkGuesses()
-//Precondition: Guesses must be between 0 - 9 
+//Precondition: Guesses must be between a - z  
 {
 	for (unsigned int i = 0; i < answers.size(); i++)
 	{
 		for (unsigned int j = 0; j < answers.size(); j++)
 		{
-			if (guesses[i] > 9 || guesses[i] < 0) error("checkGuesses() precondition");
+			if (guesses[i] > 122 || guesses[i] < 97) error("checkGuesses() precondition");
 			if (guesses[i] == answers[j])
 			{
 				if (i == j) bulls++;
@@ -68,6 +53,7 @@ void winningMessage()
 {
 	cout << "You win! \n"
 		"Would you like to play again? Y = Yes, N = No\n";
+	string userContinue = " ";
 	cin >> userContinue;
 	if (userContinue == "N" || userContinue == "n")
 	{
@@ -78,9 +64,8 @@ void winningMessage()
 	}
 	else if (userContinue == "Y" || userContinue == "y")
 	{
-		cout << "Fantastic! \n"; /* Before we start, please enter any random integer : \n";
-								 cin >> seed;*/
-		cout << "Ready? \n... \n..... \nGO!\n";
+		cout << "Fantastic! \n" 
+		"Ready? \n... \n..... \nGO!\n";
 		createAnswers();
 		bulls = 0;
 		cows = 0;
@@ -88,25 +73,20 @@ void winningMessage()
 	else error("Invalid Input: winningMessage()");
 }
 void bullsAndCows()
-//Numbers guessing game using a vector of guesses compared against a vector of answers selected at random however !random atm
+//Letters guessing game using a vector of guesses compared against a vector of answers selected at random however !random atm
 {
-	bulls = 0;
-	cows = 0;
 	createAnswers();
-	while (keepPlaying == true)
-	{
+	while (keepPlaying == true){
 		createGuesses();
 		checkGuesses();
 
 		cout << bulls << " bull(s) and " << cows << " cow(s) \n";
 
-		if (bulls == 4)
-		{
+		if (bulls == 4){
 			score++;
 			winningMessage();
 		}
-		else
-		{
+		else{
 			cout << "Please try again \n";
 			bulls = 0;
 			cows = 0;
@@ -114,23 +94,25 @@ void bullsAndCows()
 	}
 }
 
-int main()
-{
-	try
-	{
+int main(){
+	try{
 		cout << "Please enter any random integer: ";
+		int seed;
 		cin >> seed;
+		cout << "Okay, so, I'm thinking of 4 different letters between a - z \n" 
+		"If you guess the right letter but in the wrong order you have 1 cow \n"
+		"If you guess both the letter and the order correctly you get 1 bull \n"
+		"You need 4 bulls to win \n"
+		"Enter you guesses like so: 1 2 3 4 \n"
+		"Ready? \n... \n..... \nGO!\n";
 		srand(seed);
 		welcomeMessage();
 		bullsAndCows();
 	}
-
-	catch (exception& e)
-	{
+	catch (exception& e){
 		cerr << "Error: " << e.what() << '\n';
 	}
-	catch (...)
-	{
+	catch (...){
 		cerr << "Unknown error \n";
 	}
 }
