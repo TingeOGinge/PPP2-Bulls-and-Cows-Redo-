@@ -50,6 +50,8 @@ void checkGuesses()
 	}
 }
 void winningMessage()
+//congratulates user and prompts them to play another round
+//prints amount of successful rounds if the user quits
 {
 	cout << "You win! \n"
 		"Would you like to play again? Y = Yes, N = No\n";
@@ -72,7 +74,7 @@ void winningMessage()
 	else error("Invalid Input: winningMessage()");
 }
 void bullsAndCows()
-//Letters guessing game using a vector of guesses compared against a vector of answers selected at random however !random atm
+//Letter guessing game using a vector<ans_gues> to compare answers and guesses
 {
 	createAnswers();
 	while (keepPlaying == true){
@@ -87,7 +89,7 @@ void bullsAndCows()
 		}
 		else{
 			cout << "Please try again \n";
-			bulls = 0;
+			bulls = 0;			//resets the score to prevent accumulation 
 			cows = 0;
 		}
 	}
