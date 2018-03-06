@@ -105,7 +105,6 @@ int main(){
 		"Enter you guesses like so: 1 2 3 4 \n"
 		"Ready? \n... \n..... \nGO!\n";
 		srand(seed);
-		welcomeMessage();
 		bullsAndCows();
 	}
 	catch (exception& e){
