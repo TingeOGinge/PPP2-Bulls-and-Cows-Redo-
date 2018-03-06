@@ -1,48 +1,48 @@
-#include "stdafx.h"
 #include "std_lib_facilities.h"
 
-vector<char>answers = { '!', '!', '!', '!' };	// used '!' to represent any answers that have failed to generate
-vector<char>guesses(4);
+class ans_gues{
+public:
+	char answer;
+	char guess; 
+}
+vector<ans_gues>game(4);
 int bulls = 0, cows = 0, score = 0;
 bool keepPlaying = true;
 
 void createAnswers()
 //Creates 4 random, different letters and arranges them in a vector 
 {
-	bool valid_int;
+	bool valid;
 	char result; 
 
 	for (int x = 0; x < 4; x++){
 		result = 'a' + rand() % 26;
-		valid_int = true;
+		valid = true;
 		for (int y = 0; y < x; y++){		//This loop prevents two numbers appearing twice in the answer
-			if (result == answers[y]) valid_int = false;
+			if (result == game[y].answer) valid = false;
 		}
-		if (valid_int == true) answers[x] = result;
+		if (valid == true) game[x].answer = result;
 		else x--;
 	}
 }
 void createGuesses()
 //Precondition: Guesses must letters between a - z
-//User enters 
+//User enters 4 letters as their attempt to win 
 {
 	char a;
 	for (int x = 0; x < 4; x++){
 		cin >> a;
 		if (a > 122 || a < 97) error("checkGuesses() precondition");
-		guesses[x] = a;
+		game[x].guess = a;
 	}
 }
 void checkGuesses()
 //Precondition: Guesses must be between a - z  
 {
-	for (unsigned int i = 0; i < answers.size(); i++)
-	{
-		for (unsigned int j = 0; j < answers.size(); j++)
-		{
-			if (guesses[i] > 122 || guesses[i] < 97) error("checkGuesses() precondition");
-			if (guesses[i] == answers[j])
-			{
+	for (unsigned int i = 0; i < game.size(); i++){
+		for (unsigned int j = 0; j < game.size(); j++){
+			if (game[i].guess > 122 || game[i].guess < 97) error("checkGuesses() precondition");
+			if (game[i].guess == game[j].answer){
 				if (i == j) bulls++;
 				else cows++;
 			}
@@ -55,12 +55,11 @@ void winningMessage()
 		"Would you like to play again? Y = Yes, N = No\n";
 	string userContinue = " ";
 	cin >> userContinue;
-	if (userContinue == "N" || userContinue == "n")
-	{
+	if (userContinue == "N" || userContinue == "n"){
 		keepPlaying = false;
 		cout << "Thanks for playing! \n";
-		if (score > 1) cout << "You won " << score << " rounds! \n";
-		else cout << "You won " << score << " round! \n";
+		if (score == 1) cout << "You won " << score << " round! \n";
+		else cout << "You won " << score << " rounds! \n";
 	}
 	else if (userContinue == "Y" || userContinue == "y")
 	{
@@ -106,7 +105,6 @@ int main(){
 		"Enter you guesses like so: 1 2 3 4 \n"
 		"Ready? \n... \n..... \nGO!\n";
 		srand(seed);
-		welcomeMessage();
 		bullsAndCows();
 	}
 	catch (exception& e){
