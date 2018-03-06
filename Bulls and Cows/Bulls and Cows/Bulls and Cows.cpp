@@ -4,7 +4,7 @@ class ans_gues{
 public:
 	char answer;
 	char guess; 
-}
+};
 vector<ans_gues>game(4);
 int bulls = 0, cows = 0, score = 0;
 bool keepPlaying = true;
