@@ -62,8 +62,7 @@ bool winningMessage()
 		else cout << "You won " << score << " rounds! \n";
 		return false; 
 	}
-	else if (userContinue == "Y" || userContinue == "y")
-	{
+	else if (userContinue == "Y" || userContinue == "y"){
 		cout << "Fantastic! \n" 
 		"Ready? \n... \n..... \nGO!\n";
 		createAnswers();
@@ -77,7 +76,8 @@ void bullsAndCows()
 //Letter guessing game using a vector<ans_gues> to compare answers and guesses
 {
 	createAnswers();
-	while (keepPlaying == true){
+	bool continue = true;
+	while (continue){
 		createGuesses();
 		checkGuesses();
 
@@ -85,8 +85,7 @@ void bullsAndCows()
 
 		if (bulls == 4){
 			score++;
-			bool continue = winningMessage();
-			if (!continue) break; 
+			continue = winningMessage();
 		}
 		else{
 			cout << "Please try again \n";
