@@ -40,7 +40,7 @@ void checkGuesses()
 {
 	for (unsigned int i = 0; i < game.size(); i++){
 		for (unsigned int j = 0; j < game.size(); j++){
-			if (game[i].guess > 122 || game[i].guess < 97) error("checkGuesses() precondition");
+			if (game[i].guess > 'z' || game[i].guess < 'a') error("checkGuesses() precondition");
 			if (game[i].guess == game[j].answer){
 				if (i == j) bulls++;
 				else cows++;
