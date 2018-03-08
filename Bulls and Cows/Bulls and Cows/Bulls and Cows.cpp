@@ -7,7 +7,6 @@ public:
 };
 vector<ans_gues>game(4);
 int bulls = 0, cows = 0, score = 0;
-bool keepPlaying = true;
 
 void createAnswers()
 //Creates 4 random, different letters and arranges them in a vector 
@@ -49,7 +48,7 @@ void checkGuesses()
 		}
 	}
 }
-void winningMessage()
+bool winningMessage()
 //congratulates user and prompts them to play another round
 //prints amount of successful rounds if the user quits
 {
@@ -58,18 +57,18 @@ void winningMessage()
 	string userContinue = " ";
 	cin >> userContinue;
 	if (userContinue == "N" || userContinue == "n"){
-		keepPlaying = false;
 		cout << "Thanks for playing! \n";
 		if (score == 1) cout << "You won " << score << " round! \n";
 		else cout << "You won " << score << " rounds! \n";
+		return false; 
 	}
-	else if (userContinue == "Y" || userContinue == "y")
-	{
+	else if (userContinue == "Y" || userContinue == "y"){
 		cout << "Fantastic! \n" 
 		"Ready? \n... \n..... \nGO!\n";
 		createAnswers();
 		bulls = 0;
 		cows = 0;
+		return true;
 	}
 	else error("Invalid Input: winningMessage()");
 }
@@ -77,7 +76,8 @@ void bullsAndCows()
 //Letter guessing game using a vector<ans_gues> to compare answers and guesses
 {
 	createAnswers();
-	while (keepPlaying == true){
+	bool continue = true;
+	while (continue){
 		createGuesses();
 		checkGuesses();
 
@@ -85,7 +85,7 @@ void bullsAndCows()
 
 		if (bulls == 4){
 			score++;
-			winningMessage();
+			continue = winningMessage();
 		}
 		else{
 			cout << "Please try again \n";
